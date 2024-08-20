@@ -45,7 +45,7 @@ class Stream:
                 color: white;
                 background-color: #262730;
                 border: none;
-                border-radius: 5px;
+                border-radius: 3px;
                 text-align: center;
                 text-decoration: none;
                 width: 100%;
