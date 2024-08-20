@@ -142,7 +142,7 @@ class Stream:
                 )
 
     def buy_me_coffee(self, selected):
-        if selected == 'Buy Me A Coffee':
+    if selected == 'Buy Me A Coffee':
             self.st.write('---')
             for _ in range(1):
                 self.st.markdown("##")
@@ -151,8 +151,9 @@ class Stream:
             with col1:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
-                if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    self.st.markdown(f"[Buy Me A Coffee]({url})")
+                self.st.components.html(f"""
+                <button type="button" onclick="window.open('{url}', '_blank')">Buy Me A Coffee</button>
+                """, height=40)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
