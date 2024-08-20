@@ -33,37 +33,26 @@ class Stream:
             st_lottie(lottie_coder)
         self.st.write('---')
 
-    def execute_after_button_click(self, url, success, fail):
-        placeholder = self.st.empty()
-        progress_bar = self.st.empty()
-
-        for i in range(100):
-            time.sleep(0.001)
-            progress_bar.progress(i + 1)
-
-        try:
-            response = requests.head(url)
-            if response.status_code == 200:
-                placeholder.success(success)
-                progress_bar.empty()
-                time.sleep(3)
-                placeholder.empty()
-            else:
-                placeholder.error(fail)
-                progress_bar.empty()
-                time.sleep(3)
-                placeholder.empty()
-        except requests.exceptions.RequestException as e:
-            placeholder.error(f"Error opening link: {e}")
-            progress_bar.empty()
-
     def application_logic(self, url, success, fail, prefix=""):
-        if not hasattr(self, '_visit_button'):
-            self._visit_button = st.button("Visit")
+        """
+        This function handles the application logic for the Streamlit app.
 
+        Args:
+        url (str): The URL to visit.
+        success (str): The success message to display.
+        fail (str): The error message to display.
+        prefix (str): The prefix for the URL (default is an empty string).
+        """
+
+        # Create a placeholder for the progress bar and messages
+        placeholder = st.empty()
+        progress_bar = st.empty()
+
+        # Initialize the visited state
         if 'visited' not in st.session_state:
             st.session_state.visited = False
 
+        # Create the button code
         button_code = f"""
             <style>
             .custom-button {{
@@ -85,16 +74,56 @@ class Stream:
                 color: white;
             }}
             </style>
-            <a href="{url}" target="_blank" class="custom-button">Visit</a>
-            """
-        button_placeholder = self.st.empty()
-        button_placeholder.markdown(button_code, unsafe_allow_html=True)
-        button_placeholder.empty()
+            <a href="{url}" target="_blank" class="custom-button" onclick="visitLink()">Visit</a>
+            <script>
+            function visitLink() {{
+                window.parent.visitLinkCallback();
+            }}
+            </script>
+        """
 
-        if self._visit_button:
-            button_placeholder.markdown(button_code, unsafe_allow_html=True)
+        # Display the button
+        self.st.markdown(button_code, unsafe_allow_html=True)
+
+        # Define a callback function to handle the button click
+        def visit_link_callback():
             st.session_state.visited = True
-            threading.Thread(target=self.execute_after_button_click, args=(url, success, fail)).start()
+
+        # Add the callback function to the Streamlit app
+        self.st.js("window.visitLinkCallback = () => {window.parent.visitLinkCallback();};")
+
+        # Check if the button has been clicked
+        if st.session_state.visited:
+            # Display the progress bar
+            progress_bar.progress_bar(0)
+
+            # Simulate some work
+            for i in range(100):
+                time.sleep(0.001)
+                progress_bar.progress_bar(i + 1)
+
+            # Try to visit the URL
+            try:
+                response = requests.head(url)
+                if response.status_code == 200:
+                    # Display a success message
+                    placeholder.success(success)
+                    progress_bar.empty()
+                    time.sleep(3)
+                    placeholder.empty()
+                    st.session_state.visited = False
+                else:
+                    # Display an error message
+                    placeholder.error(fail)
+                    progress_bar.empty()
+                    time.sleep(3)
+                    placeholder.empty()
+                    st.session_state.visited = False
+            except requests.exceptions.RequestException as e:
+                # Display an error message
+                placeholder.error(f"Error opening link: {e}")
+                progress_bar.empty()
+                st.session_state.visited = False
 
     def information(self, selected):
         if selected == 'Info':
