@@ -35,8 +35,7 @@ class Stream:
 
     def application_logic(self, url, success, fail, prefix = ""):
         placeholder = self.st.empty()
-        placeholder = st.empty()
-        progress_bar = st.progress(0)
+        progress_bar = st.empty()
 
         if 'visited' not in st.session_state:
             st.session_state.visited = False
@@ -62,11 +61,13 @@ class Stream:
                 color: white;
             }}
             </style>
-            <a href="{url}" target="_blank" class="custom-button">Visit</a>
+            <a href="#" target="_blank" class="custom-button" onclick="document.getElementById('visit-button').click()">Visit</a>
             """
         self.st.markdown(button_code, unsafe_allow_html=True)
 
-        if button_code:
+        hidden_button = st.button("Visit", key="visit-button", type="primary")
+
+        if hidden_button:
             st.session_state.visited = True
 
         if st.session_state.visited == True:
