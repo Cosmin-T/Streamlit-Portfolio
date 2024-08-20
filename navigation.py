@@ -168,7 +168,7 @@ class Stream:
                         transition: background-color 0.3s ease;
                     }}
                     .custom-button:hover {{
-                        background-color: darkred;
+                        background-color: #6a2336;
                         color: white;
                     }}
                     </style>
