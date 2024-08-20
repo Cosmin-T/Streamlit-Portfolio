@@ -172,7 +172,7 @@ class Stream:
                         color: white;
                     }}
                     </style>
-                    <a href="{url}" target="_blank" class="custom-button">Visit</a>
+                    <a href="{url}" target="_blank" class="custom-button">Buy Me a Coffee</a>
                     """
                 self.st.markdown(button_code, unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
