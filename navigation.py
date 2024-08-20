@@ -68,7 +68,6 @@ class Stream:
 
         if button_code:
             st.session_state.visited = True
-            st.rerun()
 
         if st.session_state.visited:
             for i in range(100):
