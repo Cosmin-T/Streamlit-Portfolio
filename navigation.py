@@ -142,7 +142,7 @@ class Stream:
                 )
 
     def buy_me_coffee(self, selected):
-    if selected == 'Buy Me A Coffee':
+        if selected == 'Buy Me A Coffee':
             self.st.write('---')
             for _ in range(1):
                 self.st.markdown("##")
