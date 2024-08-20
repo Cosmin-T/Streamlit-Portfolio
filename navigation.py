@@ -33,10 +33,9 @@ class Stream:
             st_lottie(lottie_coder)
         self.st.write('---')
 
-
-    def application_logic(self, url, success, fail, prefix = ""):
-        placeholder = self.st.empty()
-        progress_bar = self.st.progress(0)
+    def application_logic(self, url, success, fail, prefix=""):
+        placeholder = st.empty()
+        progress_bar = st.progress(0)
 
         if 'visited' not in st.session_state:
             st.session_state.visited = False
@@ -62,38 +61,35 @@ class Stream:
                 color: white;
             }}
             </style>
-            <a href="{url}" target="_blank" class="custom-button">Visit</a>
+            <a href="{url}" target="_blank" class="custom-button" onclick="window.location.href='{st.experimental_get_query_params().get('visit-trigger', ['false'])[0]}';">Visit</a>
             """
-        self.st.markdown(button_code, unsafe_allow_html=True)
+        st.markdown(button_code, unsafe_allow_html=True)
 
-        if st.button('Visit'):
+        if st.experimental_get_query_params().get('visit-trigger') == ['true']:
             st.session_state.visited = True
+            st.experimental_set_query_params()  # Clear query params after visit
 
         if st.session_state.visited:
-            placeholder.info('Loading...')
-            for i in range(100):
-                time.sleep(0.001)
-                progress_bar.progress(i + 1)
+            # Update the progress bar and show a spinner
+            with st.spinner('Loading...'):
+                for i in range(100):
+                    time.sleep(0.01)  # Slightly increased sleep to make progress visible
+                    progress_bar.progress(i + 1)
 
-            try:
-                response = requests.head(url)
-                if response.status_code == 200:
-                    placeholder.success(success)
+                try:
+                    response = requests.head(url)
+                    if response.status_code == 200:
+                        placeholder.success(success)
+                    else:
+                        placeholder.error(fail)
+                except requests.exceptions.RequestException as e:
+                    placeholder.error(f"Error opening link: {e}")
+                finally:
                     progress_bar.empty()
                     time.sleep(3)
                     placeholder.empty()
                     st.session_state.visited = False
-                else:
-                    placeholder.error(fail)
-                    progress_bar.empty()
-                    time.sleep(3)
-                    placeholder.empty()
-                    st.session_state.visited = False
-            except requests.exceptions.RequestException as e:
-                placeholder.error(f"Error opening link: {e}")
-                progress_bar.empty()
-                st.session_state.visited = False
-
+                    st.rerun()  # Rerun the app to reset state
     def information(self, selected):
         if selected == 'Info':
             col1, col2 = self.st.columns(2)
