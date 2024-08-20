@@ -66,10 +66,13 @@ class Stream:
         """
         self.st.markdown(button_code, unsafe_allow_html=True)
 
-        if st.experimental_get_query_params().get('visit-trigger') == ['true']:
+        if 'visit-trigger' not in st.session_state:
+            st.session_state['visit-trigger'] = False
+            st.experimental_set_query_params(visit_trigger='true')
+        elif st.experimental_get_query_params().get('visit-trigger') == ['true']:
             st.session_state.visited = True
+            st.session_state['visit-trigger'] = True
             st.experimental_set_query_params(visit_trigger='false')
-
         if st.session_state.visited:
             for i in range(100):
                 time.sleep(0.001)
@@ -78,20 +81,19 @@ class Stream:
             try:
                 response = requests.head(url)
                 if response.status_code == 200:
-                    placeholder.success(success)
-                    progress_bar.empty()
-                    time.sleep(3)
-                    placeholder.empty()
+                    st.session_state.visited = False
+                    with st.spinner('Processing...'):
+                        placeholder.success(success)
+                        time.sleep(3)
+                        placeholder.empty()
                 else:
+                    st.session_state.visited = False
                     placeholder.error(fail)
-                    progress_bar.empty()
                     time.sleep(3)
                     placeholder.empty()
             except requests.exceptions.RequestException as e:
-                placeholder.error(f"Error opening link: {e}")
-                progress_bar.empty()
-            finally:
                 st.session_state.visited = False
+            placeholder.error(f"Error opening link: {e}")
 
     def information(self, selected):
         if selected == 'Info':
