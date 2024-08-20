@@ -152,9 +152,9 @@ class Stream:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
                 if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    self.st.components.html(f"""
-                    <iframe src='{url}' width="0" height="0" frameborder="0"></iframe>
-                    """, height=0)
+                    js = "window.open('{}')".format(url)
+                    html = '<img src onerror="{}">'.format(js)
+                    self.st.markdown(html, unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
