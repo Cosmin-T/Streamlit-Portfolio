@@ -33,9 +33,7 @@ class Stream:
             st_lottie(lottie_coder)
         self.st.write('---')
 
-    def application_logic(self, url, success, fail, prefix = ""):
-        placeholder = self.st.empty()
-        progress_bar = self.st.empty()
+    def application_logic(self, url):
 
         button_code = f"""
             <style>
@@ -58,35 +56,9 @@ class Stream:
                 color: white;
             }}
             </style>
-            <button class="custom-button">Visit</button>
-        """
-
+            <a href="{url}" target="_blank" class="custom-button">Visit</a>
+            """
         self.st.markdown(button_code, unsafe_allow_html=True)
-
-        if 'visited' not in self.st.session_state:
-            self.st.session_state.visited = False
-
-        if self.st.session_state.visited:
-            for i in range(100):
-                time.sleep(0.001)
-                progress_bar.progress(i + 1)
-
-            try:
-                response = requests.head(url)
-                if response.status_code == 200:
-                    placeholder.success(success)
-                else:
-                    placeholder.error(fail)
-            except requests.exceptions.RequestException as e:
-                placeholder.error(f"Error opening link: {e}")
-
-            progress_bar.empty()
-            time.sleep(3)
-            placeholder.empty()
-            self.st.session_state.visited = False
-
-        if self.st.button("Visit", key="visit_button"):
-            self.st.session_state.visited = True
 
     def information(self, selected):
         if selected == 'Info':
@@ -103,7 +75,7 @@ class Stream:
 
             self.st.subheader('InstaBlast')
             self.st.markdown('###### Blast your message to the masses, without losing your mind!')
-            self.application_logic('https://www.instagram.com', 'InstaBlast Loaded', 'Failed to Load InstaBlast', prefix='1')
+            self.application_logic('https://www.instagram.com')
             with self.st.expander('The Boring Stuff', expanded=False):
                 self.st.info(
                     """
@@ -138,7 +110,7 @@ class Stream:
             self.st.write('---')
             self.st.subheader('DataDash')
             self.st.markdown('###### Dash to insights, without getting lost in data!')
-            self.application_logic('https://www.datadash.com', 'DataDash Loaded', 'Failed to Load DataDash', prefix='2')
+            self.application_logic('https://www.datadash.com')
             with self.st.expander('The Boring Stuff', expanded=False):
                 self.st.info(
                     """
