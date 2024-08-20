@@ -141,23 +141,25 @@ class Stream:
                     """
                 )
 
-    def buy_me_coffee(self, selected):
+    def buy_me_coffee(selected):
         if selected == 'Buy Me A Coffee':
-            self.st.write('---')
+            st.write('---')
             for _ in range(1):
-                self.st.markdown("##")
-
-            # Define the URL for the coffee link
+                st.markdown("##")
             url = "https://revolut.me/cosminhbs7"
 
-            # Create a wide button
-            col1, col2 = st.columns([4, 1])
+            # Column layout
+            col1, col2 = st.columns(2)
+
             with col1:
-                self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
+                st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
+
             with col2:
-                if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    self.st.write("Thank you for your support!")
-                    self.st.markdown(f'<meta http-equiv="refresh" content="0; url={url}">', unsafe_allow_html=True)
+                if st.button("Buy Me A Coffee", use_container_width=True):
+                    # Generate the link in a new tab with JavaScript
+                    js = f"window.open('{url}')"  # JavaScript code to open the link in a new tab
+                    html = f'<script>{js}</script>'  # Embedding the JS in a script tag
+                    st.markdown(html, unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
