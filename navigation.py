@@ -24,7 +24,7 @@ class Stream:
         self.st.markdown("##")
         col1, col2 = self.st.columns(2)
         with col1:
-            for _ in range(2):
+            for _ in range(1):
                 self.st.markdown("##")
             self.st.title("May theIndent be With You!!!")
         with col2:
@@ -66,7 +66,7 @@ class Stream:
         if selected == 'Info':
             col1, col2 = self.st.columns(2)
             with col1:
-                for _ in range(4):
+                for _ in range(1):
                     self.st.markdown("###")
                 self.st.subheader('Warning! Boring stuff down bellow!')
             with col2:
