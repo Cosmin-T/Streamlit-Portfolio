@@ -146,13 +146,18 @@ class Stream:
             self.st.write('---')
             for _ in range(1):
                 self.st.markdown("##")
+
+            # Define the URL for the coffee link
             url = "https://revolut.me/cosminhbs7"
-            col1, col2 = self.st.columns(2)
+
+            # Create a wide button
+            col1, col2 = st.columns([4, 1])
             with col1:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
-                if self.st.button("Buy Me A Coffee", key="coffee_button", width=None, disabled=False, label_visibility="visible", help=None, **kwargs):
-                    st.markdown(f'<a href="{url}" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold; padding: 10px; border: none; border-radius: 5px; background-color: #4CAF50; color: #fff;">Buy Me A Coffee</a>', unsafe_allow_html=True)
+                if self.st.button("Buy Me A Coffee", use_container_width=True):
+                    self.st.write("Thank you for your support!")
+                    self.st.markdown(f'<meta http-equiv="refresh" content="0; url={url}">', unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
