@@ -5,6 +5,7 @@ import requests
 import webbrowser
 import threading
 import time
+import os
 
 
 class Stream:
@@ -151,7 +152,7 @@ class Stream:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
                 if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    webbrowser.open_new_tab(url)
+                    os.system(f"start {url}")
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
