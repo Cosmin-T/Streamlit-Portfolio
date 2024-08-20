@@ -121,7 +121,7 @@ class Stream:
                 )
                 self.st.info(
                     """
-                    * Connect to databases: Link your database to our tool and start visualizing your data in minutes.
+                    * Connect to databases: Link your database to the tool and start visualizing your data in minutes.
 
                     * Upload Excel files: Upload your Excel files and start analyzing your data in seconds.
                     """
