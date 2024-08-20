@@ -151,9 +151,8 @@ class Stream:
             with col1:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
-                if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    js = "window.open('{}')".format(url)
-                    self.st.markdown(f'<script>{js}</script>', unsafe_allow_html=True)
+                if self.st.button("Buy Me A Coffee", key="coffee_button", width=None, disabled=False, label_visibility="visible", help=None, **kwargs):
+                    st.markdown(f'<a href="{url}" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold; padding: 10px; border: none; border-radius: 5px; background-color: #4CAF50; color: #fff;">Buy Me A Coffee</a>', unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
