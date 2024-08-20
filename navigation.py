@@ -48,7 +48,7 @@ class Stream:
                 border-radius: 5px;
                 text-align: center;
                 text-decoration: none;
-                width: 50%;
+                width: 30%;
                 transition: background-color 0.3s ease;
             }}
             .custom-button:hover {{
