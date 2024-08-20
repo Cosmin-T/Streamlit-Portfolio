@@ -151,10 +151,15 @@ class Stream:
             with col1:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
-                if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    js = "window.open('https://revolut.me/cosminhbs7');"
-                    # Inject JavaScript into the Streamlit app
-                    self.st.components.v1.html(f'<script>{js}</script>')
+                # Button using markdown to open the link in a new tab
+                button_code = f"""
+                <a href="{url}" target="_blank">
+                    <button style="display: block; width: 100%; padding: 10px; border: none; border-radius: 5px; background-color: #4CAF50; color: white; font-size: 16px; font-weight: bold;">
+                        Buy Me A Coffee
+                    </button>
+                </a>
+                """
+                self.st.markdown(button_code, unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
