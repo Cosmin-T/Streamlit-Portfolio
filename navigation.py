@@ -175,6 +175,7 @@ class Stream:
                     <a href="{url}" target="_blank" class="custom-button">Buy Me A Coffee</a>
                     """
                 self.st.markdown(button_code, unsafe_allow_html=True)
+            self.st.write('---')
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
