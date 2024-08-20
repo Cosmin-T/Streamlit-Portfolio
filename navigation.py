@@ -151,30 +151,30 @@ class Stream:
             with col1:
                 self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
-                button_style = """
-                <style>
-                .stButton>button {
-                    width: 100%;
-                    padding: 10px;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: #262730;
-                    color: white;
-                    font-size: 16px;
-                    font-weight: bold;
-                    transition: background-color 0.3s ease;
-                }
-                .stButton>button:hover {
-                    background-color: red;
-                    color: white;
-                }
-                </style>
-                """
-                self.st.markdown(button_style, unsafe_allow_html=True)
-                if self.st.button("Buy Me A Coffee", use_container_width=True):
-                    js = f"window.open('{url}');"
-                    self.st.components.v1.html(f'<script>{js}</script>')
-
+                button_code = f"""
+                    <style>
+                    .custom-button {{
+                        display: inline-block;
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: white;
+                        background-color: #262730;
+                        border: none;
+                        border-radius: 5px;
+                        text-align: center;
+                        text-decoration: none;
+                        width: 100%;
+                        transition: background-color 0.3s ease;
+                    }}
+                    .custom-button:hover {{
+                        background-color: red;
+                        color: white;
+                    }}
+                    </style>
+                    <a href="{url}" target="_blank" class="custom-button">Visit</a>
+                    """
+                self.st.markdown(button_code, unsafe_allow_html=True)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
