@@ -141,7 +141,7 @@ class Stream:
                     """
                 )
 
-    def buy_me_coffee(selected):
+    def buy_me_coffee(self, selected):
         if selected == 'Buy Me A Coffee':
             st.write('---')
             for _ in range(1):
