@@ -6,6 +6,7 @@ import webbrowser
 import threading
 import time
 
+
 class Stream:
     def __init__(self, st):
         self.st = st
@@ -141,7 +142,18 @@ class Stream:
 
     def buy_me_coffee(self, selected):
         if selected == 'Buy Me A Coffee':
+            self.st.write('---')
+            for _ in range(1):
+                self.st.markdown("##")
+            url = "https://revolut.me/cosminhbs7"
+            col1, col2 = self.st.columns(2)
+            with col1:
+                self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
+            with col2:
+                if self.st.button("Buy Me A Coffee", use_container_width=True):
+                    webbrowser.open_new_tab(url)
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
+
 
     def container(self):
         self.st.markdown("##")
