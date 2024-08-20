@@ -66,7 +66,7 @@ class Stream:
             """
         self.st.markdown(button_code, unsafe_allow_html=True)
 
-        if st.query_params().get('visit-trigger') == ['true']:
+        if button_code:
             st.session_state.visited = True
             st.rerun()
 
