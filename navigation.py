@@ -38,6 +38,9 @@ class Stream:
         placeholder = st.empty()
         progress_bar = st.progress(0)
 
+        if 'visited' not in st.session_state:
+            st.session_state.visited = False
+
         button_code = f"""
             <style>
             .custom-button {{
@@ -63,25 +66,33 @@ class Stream:
             """
         self.st.markdown(button_code, unsafe_allow_html=True)
 
-        for i in range(100):
-            time.sleep(0.001)
-            progress_bar.progress(i + 1)
+        if st.experimental_get_query_params().get('visit-trigger') == ['true']:
+            st.session_state.visited = True
+            st.rerun()
 
-        try:
-            response = requests.head(url)
-            if response.status_code == 200:
-                placeholder.success(success)
+        if st.session_state.visited:
+            for i in range(100):
+                time.sleep(0.001)
+                progress_bar.progress(i + 1)
+
+            try:
+                response = requests.head(url)
+                if response.status_code == 200:
+                    placeholder.success(success)
+                    progress_bar.empty()
+                    time.sleep(3)
+                    placeholder.empty()
+                    st.session_state.visited = False
+                else:
+                    placeholder.error(fail)
+                    progress_bar.empty()
+                    time.sleep(3)
+                    placeholder.empty()
+                    st.session_state.visited = False
+            except requests.exceptions.RequestException as e:
+                placeholder.error(f"Error opening link: {e}")
                 progress_bar.empty()
-                time.sleep(3)
-                placeholder.empty()
-            else:
-                placeholder.error(fail)
-                progress_bar.empty()
-                time.sleep(3)
-                placeholder.empty()
-        except requests.exceptions.RequestException as e:
-            placeholder.error(f"Error opening link: {e}")
-            progress_bar.empty()
+                st.session_state.visited = False
 
     def information(self, selected):
         if selected == 'Info':
