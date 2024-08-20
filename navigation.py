@@ -45,10 +45,10 @@ class Stream:
                 color: white;
                 background-color: #262730;
                 border: none;
-                border-radius: 3px;
+                border-radius: 5px;
                 text-align: center;
                 text-decoration: none;
-                width: 100%;
+                width: 50%;
                 transition: background-color 0.3s ease;
             }}
             .custom-button:hover {{
