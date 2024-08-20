@@ -143,23 +143,18 @@ class Stream:
 
     def buy_me_coffee(self, selected):
         if selected == 'Buy Me A Coffee':
-            st.write('---')
+            self.st.write('---')
             for _ in range(1):
-                st.markdown("##")
+                self.st.markdown("##")
             url = "https://revolut.me/cosminhbs7"
-
-            # Column layout
-            col1, col2 = st.columns(2)
-
+            col1, col2 = self.st.columns(2)
             with col1:
-                st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
-
+                self.st.markdown('###### If you enjoy my work, please consider buying me a coffee!')
             with col2:
-                if st.button("Buy Me A Coffee", use_container_width=True):
-                    # Generate the link in a new tab with JavaScript
-                    js = f"window.open('{url}')"  # JavaScript code to open the link in a new tab
-                    html = f'<script>{js}</script>'  # Embedding the JS in a script tag
-                    st.markdown(html, unsafe_allow_html=True)
+                if self.st.button("Buy Me A Coffee", use_container_width=True):
+                    js = "window.open('https://revolut.me/cosminhbs7');"
+                    # Inject JavaScript into the Streamlit app
+                    self.st.components.v1.html(f'<script>{js}</script>')
             self.st_lottie(self.load_lottie("https://lottie.host/6da5d610-becb-4650-a196-c45330ba89d8/yFOvC9Qw3t.json"))
 
 
