@@ -33,67 +33,85 @@ class Stream:
             st_lottie(lottie_coder)
         self.st.write('---')
 
-    def application_logic(self, url, success, fail, prefix = ""):
+    def application_logic(self, url, success, fail, prefix=""):
         placeholder = self.st.empty()
-        placeholder = st.empty()
-        progress_bar = st.progress(0)
+        progress_bar = self.st.empty()
+        pressed = False
 
-        if 'visited' not in st.session_state:
-            st.session_state.visited = False
+        if 'visited' not in self.st.session_state:
+            self.st.session_state.visited = False
+
+        def callback():
+            nonlocal pressed
+            pressed = True
 
         button_code = f"""
-            <style>
-            .custom-button {{
-                display: inline-block;
-                padding: 10px 20px;
-                font-size: 16px;
-                font-weight: bold;
-                color: white;
-                background-color: #262730;
-                border: none;
-                border-radius: 5px;
-                text-align: center;
-                text-decoration: none;
-                width: 100%;
-                transition: background-color 0.3s ease;
-            }}
-            .custom-button:hover {{
-                background-color: #6a2336;
-                color: white;
-            }}
-            </style>
-            <a href="{url}" target="_blank" class="custom-button">Visit</a>
+        <style>
+        .custom-button {{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #262730;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }}
+        .custom-button:hover {{
+            background-color: #6a2336;
+            color: white;
+        }}
+        </style>
+        <button class="custom-button" onclick="openWindow('{url}')" style="background-color: #262730">Visit</button>
         """
         self.st.markdown(button_code, unsafe_allow_html=True)
 
-        if 'visit-trigger' not in st.session_state:
-            st.session_state['visit-trigger'] = False
-            st.experimental_set_query_params(visit_trigger='true')
-        elif st.experimental_get_query_params().get('visit-trigger') == ['true']:
-            st.session_state.visited = True
-            st.session_state['visit-trigger'] = True
-            st.experimental_set_query_params(visit_trigger='false')
-        if st.session_state.visited:
-            for i in range(100):
-                time.sleep(0.001)
-                progress_bar.progress(i + 1)
+        with self.st.container():
+            pressed = self.st.button("Confirm visit link", on_click=callback)
+
+        if pressed:
+            with placeholder:
+                self.st.info("Please wait for a moment")
+                for i in range(100):
+                    time.sleep(0.001)
+                    progress_bar.progress(i + 1)
 
             try:
                 response = requests.head(url)
                 if response.status_code == 200:
-                    st.session_state.visited = False
-                    with st.spinner('Processing...'):
-                        placeholder.success(success)
-                        time.sleep(3)
-                        placeholder.empty()
-                else:
-                    st.session_state.visited = False
-                    placeholder.error(fail)
-                    time.sleep(3)
                     placeholder.empty()
+                    with placeholder:
+                        self.st.success(success)
+                        time.sleep(3)
+                    progress_bar.empty()
+                else:
+                    placeholder.empty()
+                    with placeholder:
+                        self.st.error(fail)
+                        time.sleep(3)
+                    progress_bar.empty()
             except requests.exceptions.RequestException as e:
-                st.session_state.visited = False
-            placeholder.error(f"Error opening link: {e}")
+                placeholder.empty()
+                with placeholder:
+                    self.st.error(f"Error opening link: {e}")
+                    time.sleep(3)
+            finally:
+                placeholder.empty()
+                progress_bar.empty()
+
+        with self.st.container():
+            js = """
+            <script>
+                function openWindow(url) {
+                    window.open(url);
+                }
+            </script>
+            """
+            self.st.markdown(js, unsafe_allow_html=True)
 
     def information(self, selected):
         if selected == 'Info':
