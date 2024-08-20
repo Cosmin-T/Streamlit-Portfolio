@@ -33,10 +33,31 @@ class Stream:
             st_lottie(lottie_coder)
         self.st.write('---')
 
-    def application_logic(self, url, success, fail, prefix = ""):
+    def execute_after_button_click(self, url, success, fail):
         placeholder = self.st.empty()
-        progress_bar = st.empty()
+        progress_bar = self.st.empty()
 
+        for i in range(100):
+            time.sleep(0.001)
+            progress_bar.progress(i + 1)
+
+        try:
+            response = requests.head(url)
+            if response.status_code == 200:
+                placeholder.success(success)
+                progress_bar.empty()
+                time.sleep(3)
+                placeholder.empty()
+            else:
+                placeholder.error(fail)
+                progress_bar.empty()
+                time.sleep(3)
+                placeholder.empty()
+        except requests.exceptions.RequestException as e:
+            placeholder.error(f"Error opening link: {e}")
+            progress_bar.empty()
+
+    def application_logic(self, url, success, fail, prefix=""):
         if 'visited' not in st.session_state:
             st.session_state.visited = False
 
@@ -61,38 +82,16 @@ class Stream:
                 color: white;
             }}
             </style>
-            <a href="#" target="_blank" class="custom-button" onclick="document.getElementById('visit-button').click()">Visit</a>
+            <a href="{url}" target="_blank" class="custom-button">Visit</a>
             """
-        self.st.markdown(button_code, unsafe_allow_html=True)
+        button_placeholder = self.st.empty()
+        button_placeholder.markdown(button_code, unsafe_allow_html=True)
+        button_placeholder.empty()
 
-        hidden_button = st.button("Visit", key="visit-button", type="primary")
-
-        if hidden_button:
+        if st.button("Visit"):
+            button_placeholder.markdown(button_code, unsafe_allow_html=True)
             st.session_state.visited = True
-
-        if st.session_state.visited == True:
-            for i in range(100):
-                time.sleep(0.001)
-                progress_bar.progress(i + 1)
-
-            try:
-                response = requests.head(url)
-                if response.status_code == 200:
-                    placeholder.success(success)
-                    progress_bar.empty()
-                    time.sleep(3)
-                    placeholder.empty()
-                    st.session_state.visited = False
-                else:
-                    placeholder.error(fail)
-                    progress_bar.empty()
-                    time.sleep(3)
-                    placeholder.empty()
-                    st.session_state.visited = False
-            except requests.exceptions.RequestException as e:
-                placeholder.error(f"Error opening link: {e}")
-                progress_bar.empty()
-                st.session_state.visited = False
+            threading.Thread(target=self.execute_after_button_click, args=(url, success, fail)).start()
 
     def information(self, selected):
         if selected == 'Info':
