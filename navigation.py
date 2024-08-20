@@ -69,7 +69,7 @@ class Stream:
         if button_code:
             st.session_state.visited = True
 
-        if st.session_state.visited:
+        if st.session_state.visited == True:
             for i in range(100):
                 time.sleep(0.001)
                 progress_bar.progress(i + 1)
