@@ -33,68 +33,60 @@ class Stream:
             st_lottie(lottie_coder)
         self.st.write('---')
 
-    def application_logic(self, url, success, fail, prefix=""):
+    def application_logic(self, url, success, fail, prefix = ""):
         placeholder = self.st.empty()
-
-        # Create a custom HTML button
         button_code = f"""
-        <style>
-        .custom-button {{
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #262730;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-            text-decoration: none;
-            width: 100%;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }}
-        .custom-button:hover {{
-            background-color: #6a2336;
-            color: white;
-        }}
-        </style>
-        <a href="#" class="custom-button" id="{prefix}_btn">Visit</a>
-        <script>
-        document.getElementById('{prefix}_btn').onclick = function() {{
-            fetch('/run_application_logic')
-        }};
-        </script>
-        """
-
-        # Display the button using markdown
+            <style>
+            .custom-button {{
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                color: white;
+                background-color: #262730;
+                border: none;
+                border-radius: 5px;
+                text-align: center;
+                text-decoration: none;
+                width: 100%;
+                transition: background-color 0.3s ease;
+            }}
+            .custom-button:hover {{
+                background-color: #6a2336;
+                color: white;
+            }}
+            </style>
+            <a href="{url}" target="_blank" class="custom-button">Visit</a>
+            """
         self.st.markdown(button_code, unsafe_allow_html=True)
 
-        # Handling logic after the button is clicked
-        placeholder = self.st.empty()
-        progress_bar = self.st.progress(0)
+        for i in range(1):
+            btn = st.button('Visit', key=f"{prefix}_{i}")
+            if btn:
+                placeholder = st.empty()
+                progress_bar = st.progress(0)
 
-        for i in range(100):
-            time.sleep(0.001)
-            progress_bar.progress(i + 1)
+                for i in range(100):
+                    time.sleep(0.001)
+                    progress_bar.progress(i + 1)
 
-        with placeholder:
-            try:
-                response = requests.head(url)
-                if response.status_code == 200:
-                    threading.Thread(target=webbrowser.open_new_tab, args=(url,)).start()
-                    placeholder.success(success)
-                    progress_bar.empty()
-                    time.sleep(3)
-                    placeholder.empty()
-                else:
-                    placeholder.error(fail)
-                    progress_bar.empty()
-                    time.sleep(3)
-                    placeholder.empty()
-            except requests.exceptions.RequestException as e:
-                placeholder.error(f"Error opening link: {e}")
-                progress_bar.empty()
+                with placeholder:
+                    try:
+                        response = requests.head(url)
+                        if response.status_code == 200:
+                            threading.Thread(target=webbrowser.open_new_tab, args=(url,)).start()
+                            placeholder.success(success)
+                            progress_bar.empty()
+                            time.sleep(3)
+                            placeholder.empty()
+                        else:
+                            placeholder.error(fail)
+                            progress_bar.empty()
+                            time.sleep(3)
+                            placeholder.empty()
+                    except requests.exceptions.RequestException as e:
+                        placeholder.error(f"Error opening link: {e}")
+                        progress_bar.empty()
 
     def information(self, selected):
         if selected == 'Info':
