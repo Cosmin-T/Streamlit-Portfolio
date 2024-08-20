@@ -58,6 +58,9 @@ class Stream:
             progress_bar.empty()
 
     def application_logic(self, url, success, fail, prefix=""):
+        if not hasattr(self, '_visit_button'):
+            self._visit_button = st.button("Visit")
+
         if 'visited' not in st.session_state:
             st.session_state.visited = False
 
@@ -88,7 +91,7 @@ class Stream:
         button_placeholder.markdown(button_code, unsafe_allow_html=True)
         button_placeholder.empty()
 
-        if st.button("Visit"):
+        if self._visit_button:
             button_placeholder.markdown(button_code, unsafe_allow_html=True)
             st.session_state.visited = True
             threading.Thread(target=self.execute_after_button_click, args=(url, success, fail)).start()
