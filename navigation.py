@@ -75,7 +75,7 @@ class Stream:
 
             self.st.subheader('InstaBlast')
             self.st.markdown('###### Blast your message to the masses, without losing your mind!')
-            self.application_logic('https://www.instagram.com')
+            self.application_logic('https://instablast.streamlit.app')
             with self.st.expander('The Boring Stuff', expanded=False):
                 self.st.info(
                     """
