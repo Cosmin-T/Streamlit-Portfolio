@@ -116,7 +116,7 @@ class Stream:
                     """
                     Are you tired of sifting through spreadsheets and databases to find meaningful insights?
                     Do you want to visualize your data without losing your mind?
-                    Look no further than DataDash! This Power BI tool allows you to:
+                    Look no further than DataPulse! This Power BI tool allows you to:
                     """
                 )
                 self.st.info(
