@@ -108,9 +108,9 @@ class Stream:
                     """
                 )
             self.st.write('---')
-            self.st.subheader('DataDash')
+            self.st.subheader('DataPulse')
             self.st.markdown('###### Dash to insights, without getting lost in data!')
-            self.application_logic('https://www.datadash.com')
+            self.application_logic('https://datapulse.streamlit.app')
             with self.st.expander('The Boring Stuff', expanded=False):
                 self.st.info(
                     """
